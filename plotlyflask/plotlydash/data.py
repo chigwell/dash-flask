@@ -169,8 +169,6 @@ def create_dataframe(input_file_name):
     df_total = df_total.sort_values(by=['party_votes'], ascending=False)
     winner_row = df_total.iloc[0]
     party_votes = (winner_row['party_votes'] * 100 / total_votes)
-    print('party_votes')
-    print(party_votes)
     file_name = "data/winner.csv"
     erase_file(file_name)
     with open(file_name, 'w+') as f:
@@ -184,6 +182,8 @@ def create_dataframe(input_file_name):
     df_constituencies.rename(columns={'party_votes': 'party_winner_votes'}, inplace=True)
     df_constituencies = df_constituencies.sort_values(by=['constituency_name'], ascending=True)
     #df_constituencies = df_constituencies.reset_index()
+
+    df_constituencies.to_csv("data/constituencies.csv")
 
 
     parliament_seats = df_constituencies

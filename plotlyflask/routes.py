@@ -60,3 +60,22 @@ def get_party_full_name(code):
         'data': json.loads(party.to_json(orient = 'records'))
     }
     return make_response(jsonify(data))
+
+# shows the total number of votes for each party
+
+@app.route("/api/party/votes", methods=['GET'])
+def get_party_votes():
+    df_parties = pd.read_csv('data/parties.csv', sep=";")
+    df_all_results = pd.read_csv("data/output.csv", parse_dates=["created"], sep=';')
+    df_all_results['votes'] = df_all_results['votes'].astype('int')
+    df_all_results = df_parties.merge(df_all_results, how='inner', on='party_code')
+    df_all_results.rename(columns={'party_name_x': 'party_name'}, inplace=True)
+    df_total_votes = df_all_results.groupby(['party_name', 'party_code'], as_index=False)[
+        'votes'].sum()
+    data = {
+        'message': 'shows the total number of votes for each party ',
+        'status': 200,
+        'data': json.loads(df_total_votes.to_json(orient = 'records'))
+    }
+    return make_response(jsonify(data))
+

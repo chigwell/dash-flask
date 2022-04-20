@@ -168,7 +168,7 @@ def create_dataframe(input_file_name):
     df_total = df_total_votes.groupby(['party_code', 'party_name'], as_index=False)['party_votes'].sum()
     df_total = df_total.sort_values(by=['party_votes'], ascending=False)
     winner_row = df_total.iloc[0]
-    party_votes = (winner_row['party_votes'] / total_votes)
+    party_votes = (winner_row['party_votes'] * 100 / total_votes)
     print('party_votes')
     print(party_votes)
     file_name = "data/winner.csv"

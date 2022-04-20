@@ -36,3 +36,27 @@ def get_winner():
     }
     return make_response(jsonify(data))
 
+# to get the constituencies
+
+@app.route("/api/constituencies", methods=['GET'])
+def get_constituencies():
+    constituencies = pd.read_csv('data/constituency_uk_2019.csv', sep=";")
+    data = {
+        'message': 'The list of constituencies',
+        'status': 200,
+        'data': json.loads(constituencies.to_json(orient = 'records'))
+    }
+    return make_response(jsonify(data))
+
+# to get the party name by a code
+
+@app.route("/api/party/<code>", methods=['GET'])
+def get_party_full_name(code):
+    parties = pd.read_csv('data/parties.csv', sep=";")
+    party = parties.loc[parties['party_code'] == str(code)]
+    data = {
+        'message': 'The party full name by a code',
+        'status': 200,
+        'data': json.loads(party.to_json(orient = 'records'))
+    }
+    return make_response(jsonify(data))

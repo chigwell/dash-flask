@@ -79,3 +79,22 @@ def get_party_votes():
     }
     return make_response(jsonify(data))
 
+# shows the share of the vote as a percentage of all the votes cast
+
+@app.route("/api/votes/share", methods=['GET'])
+def get_votes_share():
+    df_parties = pd.read_csv('data/parties.csv', sep=";")
+    df_all_results = pd.read_csv("data/output.csv", parse_dates=["created"], sep=';')
+    df_all_results['votes'] = df_all_results['votes'].astype('int')
+    total_votes = df_all_results['votes'].sum()
+    df_all_results = df_parties.merge(df_all_results, how='inner', on='party_code')
+    df_all_results.rename(columns={'party_name_x': 'party_name'}, inplace=True)
+    df_total_votes = df_all_results.groupby(['party_name', 'party_code'], as_index=False)[
+        'votes'].sum()
+    df_total_votes['percentage'] =  df_total_votes['votes'] * 100 / total_votes
+    data = {
+        'message': 'shows the total number of votes for each party ',
+        'status': 200,
+        'data': json.loads(df_total_votes.to_json(orient = 'records'))
+    }
+    return make_response(jsonify(data))

@@ -36,3 +36,14 @@ def get_winner():
     }
     return make_response(jsonify(data))
 
+# to get the constituencies
+
+@app.route("/api/constituencies", methods=['GET'])
+def get_constituencies():
+    constituencies = pd.read_csv('data/constituency_uk_2019.csv', sep=";")
+    data = {
+        'message': 'The list of constituencies',
+        'status': 200,
+        'data': json.loads(constituencies.to_json(orient = 'records'))
+    }
+    return make_response(jsonify(data))

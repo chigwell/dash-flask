@@ -41,7 +41,7 @@ def get_winner():
 
 @app.route("/api/constituencies", methods=['GET'])
 def get_constituencies():
-    constituencies = pd.read_csv('data/constituencies.csv', sep=",")
+    constituencies = pd.read_csv('data/constituencies.csv', sep=";")
     data = {
         'message': 'The list of constituencies',
         'status': 200,
@@ -97,5 +97,17 @@ def get_votes_share():
         'message': 'shows the total number of votes for each party ',
         'status': 200,
         'data': json.loads(df_total_votes.to_json(orient = 'records'))
+    }
+    return make_response(jsonify(data))
+
+# number of total MPs per party
+
+@app.route("/api/parliament-seats-per-party", methods=['GET'])
+def get_parliament_seats_per_party():
+    parties = pd.read_csv('data/parliament_seats.csv', sep=";")
+    data = {
+        'message': 'The number of total MPs per party',
+        'status': 200,
+        'data': json.loads(parties.to_json(orient = 'records'))
     }
     return make_response(jsonify(data))

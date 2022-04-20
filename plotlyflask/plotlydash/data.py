@@ -183,7 +183,7 @@ def create_dataframe(input_file_name):
     df_constituencies = df_constituencies.sort_values(by=['constituency_name'], ascending=True)
     #df_constituencies = df_constituencies.reset_index()
 
-    df_constituencies.to_csv("data/constituencies.csv")
+    df_constituencies.to_csv("data/constituencies.csv", sep=";")
 
 
     parliament_seats = df_constituencies
@@ -194,5 +194,6 @@ def create_dataframe(input_file_name):
     parliament_seats = parliament_seats.groupby(['party_winner_name']).size().reset_index(name='counts')
 
     parliament_seats = parliament_seats.sort_values(by=['counts'], ascending=False)
+    parliament_seats.to_csv("data/parliament_seats.csv", sep=";")
 
     return df_all_results, df_total, df_constituencies, parliament_seats, df_total_votes, winner_row

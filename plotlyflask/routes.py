@@ -24,8 +24,7 @@ def uploader():
     f.save('data/input.csv')
     return redirect("/dashapp/", code=200)
 
-
-# the mockup of results
+# to get the winner
 
 @app.route("/api/winner", methods=['GET'])
 def get_winner():
@@ -33,6 +32,7 @@ def get_winner():
     data = {
         'message': 'The winner is...',
         'status': 200,
-        'data': json.loads(winner.to_json())
+        'data': json.loads(winner.to_json(orient = 'records'))
     }
     return make_response(jsonify(data))
+

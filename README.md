@@ -42,6 +42,44 @@ or use docker:
 $ docker compose up
 ``` 
 
+### Input file
+The fields in the file will be separated by commas but each row will vary in length as described below.
+
+A result will consist of:
+
+1. A constituency
+2. A repeating set of pairs with the party code and the votes cast
+
+So for example:
+
+    Cardiff West, 11014, C, 17803, L, 4923, UKIP, 2069, LD
+    Islington South & Finsbury, 22547, L, 9389, C, 4829, LD, 3375, UKIP, 3371, G, 309, Ind
+
+> **_NOTE:_** Constituency names containing a comma will be escaped as with '\\,'
+
+We want to transform this into a standard API that shows, per constituency:
+
+* the constituency name GET /api/constituencies
+* translates the party code into a full name GET /api/party/<code>
+* shows the total number of votes for each party GET /api/party/votes
+* shows the share of the vote as a percentage of all the votes cast GET /api/votes/share
+* shows who won the constituency GET /api/constituencies
+
+One of the API endpoitns should show the results for the whole of the UK:
+* number of total MPs per party GET /api/parliament-seats-per-party
+* number of total votes per party GET /api/votes/share
+
+
+### Codes
+
+* C - Conservative
+* L - Labour
+* SNP - Scottish National Party
+* LD - Liberal Democrats
+* G - Green Party
+* Ind - Independent
+
+
 
 -----
 
